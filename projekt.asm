@@ -146,28 +146,24 @@ wyswietlanie:
     sub bx, [pom]
     mov [pom2], bx
 
+
 ;konwertuj na bin
 wysw_znak 13
 wysw_znak 10
 wyswietl txt1
-
-wysw_bin:
-    mov cx, 16
-    mov bx,[pom2]
+	mov ecx,16
 ety1:
-    push cx
-    rcl bx, 1
-    jc ety2
-    mov dl, '0'
-    jmp ety3
+	push ecx
+	rcl bx, 1
+	jc ety2
+	mov dl, '0'
+	jmp ety3
 ety2:
-    mov dl, '1'
+	mov dl, '1'
 ety3:
-    wysw_znak dl ; macro
-    pop cx
-    loop ety1
-    ret
-
+	wysw_znak dl
+	pop ecx
+	loop ety1
 
 
 ;endnewcode
