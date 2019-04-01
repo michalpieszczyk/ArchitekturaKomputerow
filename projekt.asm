@@ -10,8 +10,8 @@ start:
 	mov eax, 0
 wczyt_pierw:
 	pob_znak
-    cmp al, 1Bh
-    je esc
+	cmp al, 1Bh
+	je esc
 	cmp al, '0'
 	jb wczyt_pierw
 	cmp al, '1'
@@ -22,8 +22,8 @@ wczyt_pierw:
 
 wczyt_drug:
 	pob_znak
-    cmp al, 1Bh
-    je esc
+	cmp al, 1Bh
+	je esc
 	cmp al, 08h
 	je backspace1
 	cmp al, '0'
@@ -35,8 +35,8 @@ wczyt_drug:
 
 wczyt_trzec:
 	pob_znak
-    cmp al, 1Bh
-    je esc
+	cmp al, 1Bh
+	je esc
 	cmp al, 08h
 	je backspace2
 	cmp al, '0'
@@ -48,8 +48,8 @@ wczyt_trzec:
 
 wczyt_czwart:
 	pob_znak
-    cmp al, 1Bh
-    je esc
+	cmp al, 1Bh
+	je esc
 	cmp al, 08h
 	je backspace3
 	cmp al, '0'
@@ -61,8 +61,8 @@ wczyt_czwart:
 
 wczyt_piat:
 	pob_znak
-    cmp al, 1Bh
-    je esc
+	cmp al, 1Bh
+	je esc
 	cmp al, 08h
 	je backspace4
 	cmp al, '0'
@@ -74,8 +74,8 @@ wczyt_piat:
 
 wczyt_szost:
 	pob_znak
-    cmp al, 1Bh
-    je esc
+	cmp al, 1Bh
+	je esc
 	cmp al, 08h
 	je backspace5
 	cmp al, '0'
@@ -87,7 +87,9 @@ wczyt_szost:
 
 
 wyswietlanie:
-	wysw_znak ' '
+	wysw_znak 13
+	wysw_znak 10
+	wyswietl txt2
 
 	mov bl, [tab]
 	wysw_znak bl
@@ -99,8 +101,47 @@ wyswietlanie:
 	wysw_znak bl
 	mov bl, [tab+4]
 	wysw_znak bl
-    mov bl, [tab+5]
+	mov bl, [tab+5]
 	wysw_znak bl
+
+	wysw_znak 13
+	wysw_znak 10
+	wyswietl txt2
+
+ ;newcode
+    mov bx, 4096
+    movzx ax, [tab+1]
+    sub ax, 48
+    mul bx
+    mov [pom], ax
+
+    mov bx, 512
+    movzx ax, [tab+2]
+    sub ax, 48
+    mul bx
+    add ax, [pom]
+    mov [pom], ax
+
+    mov bx, 64
+    movzx ax, [tab+3]
+    sub ax, 48
+    mul bx
+    add ax, [pom]
+    mov [pom], ax
+
+    mov bx, 8
+    movzx ax, [tab+4]
+    sub ax, 48
+    mul bx
+    add ax, [pom]
+    mov [pom], ax
+
+    movzx ax, [tab+5]
+    sub ax, 48
+    add ax, [pom]
+    mov [pom], ax
+
+;endnewcode
 
 	pob_znak
 	end_prog
@@ -145,3 +186,4 @@ section '.data' data readable writeable
 	txt3 db 13,10,'wartosc DEC: ',NULL
 	txt4 db 13,10,'wartosc HEX: ',NULL
 	tab db 0, 0, 0, 0, 0, 0
+    pom dw 0
