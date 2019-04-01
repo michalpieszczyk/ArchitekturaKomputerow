@@ -140,17 +140,21 @@ wyswietlanie:
     mov [pom], ax
 
     movzx ax, [tab]
+    cmp ax, '0'
+    je dodatnia
     sub ax, 48
     mov bx, 32768
     mul ax
     sub bx, [pom]
     mov [pom2], bx
+    jmp binarnie
 
+dodatnia:
+	mov bx, [pom]
 
-;konwertuj na bin
-wysw_znak 13
-wysw_znak 10
+binarnie:
 wyswietl txt1
+
 	mov ecx,16
 ety1:
 	push ecx
