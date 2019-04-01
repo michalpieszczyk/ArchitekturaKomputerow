@@ -10,6 +10,8 @@ start:
 	mov eax, 0
 wczyt_pierw:
 	pob_znak
+    cmp al, 1Bh
+    je esc
 	cmp al, '0'
 	jb wczyt_pierw
 	cmp al, '1'
@@ -20,6 +22,8 @@ wczyt_pierw:
 
 wczyt_drug:
 	pob_znak
+    cmp al, 1Bh
+    je esc
 	cmp al, 08h
 	je backspace1
 	cmp al, '0'
@@ -31,6 +35,8 @@ wczyt_drug:
 
 wczyt_trzec:
 	pob_znak
+    cmp al, 1Bh
+    je esc
 	cmp al, 08h
 	je backspace2
 	cmp al, '0'
@@ -42,6 +48,8 @@ wczyt_trzec:
 
 wczyt_czwart:
 	pob_znak
+    cmp al, 1Bh
+    je esc
 	cmp al, 08h
 	je backspace3
 	cmp al, '0'
@@ -53,6 +61,8 @@ wczyt_czwart:
 
 wczyt_piat:
 	pob_znak
+    cmp al, 1Bh
+    je esc
 	cmp al, 08h
 	je backspace4
 	cmp al, '0'
@@ -64,6 +74,8 @@ wczyt_piat:
 
 wczyt_szost:
 	pob_znak
+    cmp al, 1Bh
+    je esc
 	cmp al, 08h
 	je backspace5
 	cmp al, '0'
@@ -89,7 +101,7 @@ wyswietlanie:
 	wysw_znak bl
     mov bl, [tab+5]
 	wysw_znak bl
-    
+
 	pob_znak
 	end_prog
 
@@ -123,6 +135,8 @@ backspace5:
 	wysw_znak 08h
 	jmp wczyt_piat
 
+esc: 
+    end_prog
 
 section '.data' data readable writeable
 	txt db 'Wprowadz wartosc osemkowa w kodzie U2 (100 000 - 77 777)',NULL
