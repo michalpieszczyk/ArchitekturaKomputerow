@@ -141,7 +141,7 @@ wyswietlanie:
 
     movzx ax, [tab]
     sub ax, 48
-    mov bx, 32786
+    mov bx, 32768
     mul ax
     sub bx, [pom]
     mov [pom2], bx
