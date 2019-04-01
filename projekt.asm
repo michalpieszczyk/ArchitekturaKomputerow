@@ -104,11 +104,9 @@ wyswietlanie:
 	mov bl, [tab+5]
 	wysw_znak bl
 
-	wysw_znak 13
-	wysw_znak 10
-	wyswietl txt2
+	
 
- ;newcode
+ ;konwersja na dec
     mov bx, 4096
     movzx ax, [tab+1]
     sub ax, 48
@@ -140,6 +138,37 @@ wyswietlanie:
     sub ax, 48
     add ax, [pom]
     mov [pom], ax
+
+    movzx ax, [tab]
+    sub ax, 48
+    mov bx, 32786
+    mul ax
+    sub bx, [pom]
+    mov [pom2], bx
+
+;konwertuj na bin
+wysw_znak 13
+wysw_znak 10
+wyswietl txt1
+
+wysw_bin:
+    mov cx, 16
+    mov bx,[pom2]
+ety1:
+    push cx
+    rcl bx, 1
+    jc ety2
+    mov dl, '0'
+    jmp ety3
+ety2:
+    mov dl, '1'
+ety3:
+    wysw_znak dl ; macro
+    pop cx
+    loop ety1
+    ret
+
+
 
 ;endnewcode
 
@@ -186,4 +215,5 @@ section '.data' data readable writeable
 	txt3 db 13,10,'wartosc DEC: ',NULL
 	txt4 db 13,10,'wartosc HEX: ',NULL
 	tab db 0, 0, 0, 0, 0, 0
-    pom dw 0
+	pom dw 0
+	pom2 dw 0
