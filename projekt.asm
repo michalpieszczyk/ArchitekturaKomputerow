@@ -139,13 +139,14 @@ wyswietlanie:
     add ax, [pom]
     mov [pom], ax
 
-    movzx ax, [tab]
-    cmp ax, '0'
+    mov al, [tab]
+    cmp al, '0'
     je dodatnia
+    movzx ax, [tab]
     sub ax, 48
     mov bx, 32768
     mul ax
-    sub bx, [pom]
+    add bx, [pom];zmienilem sub na add
     mov [pom2], bx
     jmp binarnie
 
