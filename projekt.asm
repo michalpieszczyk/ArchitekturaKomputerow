@@ -146,7 +146,7 @@ wyswietlanie:
     sub ax, 48
     mov bx, 32768
     mul ax
-    add bx, [pom] ;zmienilem sub na add
+    add bx, [pom]
     mov [pom2], bx
     jmp binarnie
 
@@ -169,6 +169,56 @@ ety3:
 	wysw_znak dl
 	pop ecx
 	loop ety1
+
+wysw_hex:
+wyswietl txt4
+	mov ax,[pom2] ;pierwsza cyfra hex
+	shr ax, 12
+	cmp ax, 10
+	jb ety4
+	add ax, 55 ; kody ascii liter
+	jmp ety5
+    ety4:
+	add ax, 30h
+    ety5:
+	wysw_znak al
+
+	mov ax, [pom2] ; druga cyfra hex
+	shl ax, 4
+	shr ax, 12
+	cmp ax, 10
+	jb ety6
+	add ax, 55
+	jmp ety7
+    ety6:
+	add ax, 30h
+    ety7:
+	wysw_znak al
+
+	mov ax, [pom2] ;trzecia cyfra hex
+	shl ax, 8
+	shr ax, 12
+	cmp ax, 10
+	jb ety8
+	add ax, 55
+	jmp ety9
+    ety8:
+	add ax, 30h
+    ety9:
+	wysw_znak al
+
+	mov ax, [pom2] ; czwarta cyfra hex
+	shl ax, 12
+	shr ax, 12
+	cmp ax, 10
+	jb ety10
+	add ax, 55
+	jmp ety11
+    ety10:
+	add ax, 30h
+    ety11:
+	wysw_znak al
+
 
 wysw_dec:
       wyswietl txt3
@@ -263,4 +313,4 @@ section '.data' data readable writeable
 	tab db 0, 0, 0, 0, 0, 0
 	pom dw 0
 	pom2 dw 0
-	tabDec db 0, 0, 0, 0, 0
+	pom3 dw 0
