@@ -18,8 +18,7 @@ wczyt_pierw:
 	ja wczyt_pierw
 	wysw_znak al
 	mov [tab], al
-	jmp wczyt_drug
-
+	
 wczyt_drug:
 	pob_znak
 	cmp al, 1Bh
@@ -40,9 +39,9 @@ wczyt_trzec:
 	cmp al, 08h
 	je backspace2
 	cmp al, '0'
-	jb wczyt_drug
+	jb wczyt_trzec
 	cmp al, '7'
-	ja wczyt_drug
+	ja wczyt_trzec
 	wysw_znak al
 	mov [tab+2], al
 
@@ -53,9 +52,9 @@ wczyt_czwart:
 	cmp al, 08h
 	je backspace3
 	cmp al, '0'
-	jb wczyt_drug
+	jb wczyt_czwart
 	cmp al, '7'
-	ja wczyt_drug
+	ja wczyt_czwart
 	wysw_znak al
 	mov [tab+3], al
 
@@ -66,9 +65,9 @@ wczyt_piat:
 	cmp al, 08h
 	je backspace4
 	cmp al, '0'
-	jb wczyt_drug
+	jb wczyt_piat
 	cmp al, '7'
-	ja wczyt_drug
+	ja wczyt_piat
 	wysw_znak al
 	mov [tab+4], al
 
@@ -79,9 +78,9 @@ wczyt_szost:
 	cmp al, 08h
 	je backspace5
 	cmp al, '0'
-	jb wczyt_drug
+	jb wczyt_szost
 	cmp al, '7'
-	ja wczyt_drug
+	ja wczyt_szost
 	wysw_znak al
 	mov [tab+5], al
 
@@ -139,6 +138,7 @@ wyswietlanie:
     add ax, [pom]
     mov [pom], ax
 
+    mov [pom2], ax
     mov al, [tab]
     cmp al, '0'
     je dodatnia
@@ -146,7 +146,7 @@ wyswietlanie:
     sub ax, 48
     mov bx, 32768
     mul ax
-    add bx, [pom];zmienilem sub na add
+    add bx, [pom] ;zmienilem sub na add
     mov [pom2], bx
     jmp binarnie
 
@@ -170,12 +170,48 @@ ety3:
 	pop ecx
 	loop ety1
 
+wysw_dec:
+      wyswietl txt3
 
-;endnewcode
+      mov al, [tab]
+      cmp al, '1'
+      je decUjemna
 
-	pob_znak
-	end_prog
+wyswietlajReszte:
+      mov ax, [pom2]
+      xor dx, dx
+      mov cx, 10000
+      div cx
+      or al, '0'
+      wysw_znak al
 
+      mov ax, dx
+      xor dx, dx
+      mov cx, 1000
+      div cx
+      or al, '0'
+      wysw_znak al
+
+      mov ax, dx
+      xor dx, dx
+      mov cl, 100
+      div cl
+      or al, '0'
+      wysw_znak al
+
+      mov al, ah
+      xor ah, ah
+      mov cl, 10
+      div cl
+      or ax, '00'
+      wysw_znak al
+      wysw_znak ah
+
+
+       pob_znak
+       end_prog
+
+;makra na ponowne wprowadzanie danych
 backspace1:
 	wysw_znak 08h
 	wysw_znak ' '
@@ -206,15 +242,25 @@ backspace5:
 	wysw_znak 08h
 	jmp wczyt_piat
 
+decUjemna:
+	wysw_znak '-'
+	mov bx, 32768
+	mul ax
+	sub bx, [pom] ;zmienilem sub na add
+	mov [pom2], bx
+	jmp wyswietlajReszte
+
+
 esc: 
     end_prog
 
 section '.data' data readable writeable
-	txt db 'Wprowadz wartosc osemkowa w kodzie U2 (100 000 - 77 777)',NULL
-	txt1 db 13,10,'wartosc BIN: ',NULL
-	txt2 db 13,10,'wartosc OCT: ',NULL
+	txt db 'Wprowadz wartosc osemkowa w kodzie U2 (100 000 - 77 777): ',NULL
+	txt1 db 13,10,'wartosc BIN (U2): ',NULL
+	txt2 db 13,10,'wartosc OCT (U2): ',NULL
 	txt3 db 13,10,'wartosc DEC: ',NULL
-	txt4 db 13,10,'wartosc HEX: ',NULL
+	txt4 db 13,10,'wartosc HEX (U2): ',NULL
 	tab db 0, 0, 0, 0, 0, 0
 	pom dw 0
 	pom2 dw 0
+	tabDec db 0, 0, 0, 0, 0
