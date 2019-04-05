@@ -295,7 +295,6 @@ backspace5:
 decUjemna:
 	wysw_znak '-'
 	mov bx, 32768
-	mul ax
 	sub bx, [pom] ;zmienilem sub na add
 	mov [pom2], bx
 	jmp wyswietlajReszte
