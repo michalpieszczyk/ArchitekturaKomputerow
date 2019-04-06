@@ -232,31 +232,31 @@ wyswietlajReszte:
       xor dx, dx
       mov cx, 10000
       div cx
-      or al, '0'
+      add al, 30h
       wysw_znak al
 
       mov ax, dx
       xor dx, dx
       mov cx, 1000
       div cx
-      or al, '0'
+      add al, 30h
       wysw_znak al
 
       mov ax, dx
       xor dx, dx
       mov cl, 100
       div cl
-      or al, '0'
+      add al, 30h
       wysw_znak al
 
       mov al, ah
       xor ah, ah
       mov cl, 10
       div cl
-      or ax, '00'
+	  add al, 30h
+	  add ah, 30h
       wysw_znak al
       wysw_znak ah
-
 
        pob_znak
        end_prog
@@ -312,4 +312,3 @@ section '.data' data readable writeable
 	tab db 0, 0, 0, 0, 0, 0
 	pom dw 0
 	pom2 dw 0
-	pom3 dw 0
