@@ -6,6 +6,7 @@ include 'win_macros.inc'
 
 section '.text' code readable executable
 start:
+	clrscr
 	wyswietl txt
 	mov eax, 0
 wczyt_pierw:
@@ -259,6 +260,8 @@ wyswietlajReszte:
       wysw_znak ah
 
        pob_znak
+	   cmp al, 08h
+	   je start
        end_prog
 
 ;makra na ponowne wprowadzanie danych
