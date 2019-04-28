@@ -32,6 +32,45 @@ start:
 	fidiv [zm3]
 	fstp [krok]
 
+
+zwieksz:
+	fild [zm3]
+	fisub [jeden]
+	fistp [zm3]
+	fld [zm1]
+	fadd [krok]
+	fstp [obecna]
+	;fcom [zm2]
+	fild [zm3]
+	ficom [zero]
+	ja dodane 
+	
+
+sumuj:
+	fld [obecna]
+	fcos
+	fdiv [obecna]
+	fadd [suma]
+	fstp [suma]
+	jmp zwieksz
+
+
+
+dodane:
+	fld [zm1]
+	fcos
+	fdiv [zm1]
+	fstp [zm1]
+	
+	fld [zm2]
+	fcos
+	fdiv [zm2]
+	fadd [zm1]
+	fidiv [dwa]
+	fadd [suma]
+	fstp [wyn]
+	
+
 ;kod policzenia przedzialu i kroku, wartosci w funkcji
 ;wynik do zmienej typu double i wyswietlic w taki sposób jak poniżej na 2x 32 bit
 ;wyswietlenie wyniku - spos�b 2
@@ -39,11 +78,13 @@ start:
 	ustaw_kursor 5,5
 	cinvoke printf, <'Przedzial  = %.3lf ',0>, dword [przed], dword [przed+4] 
 	cinvoke printf, <'Krok  = %.3lf ',0>, dword [krok], dword [krok+4] 
+	cinvoke printf, <'Suma  = %.3lf ',0>, dword [suma], dword [suma+4] 
+	cinvoke printf, <'Wynik  = %.3lf ',0>, dword [wyn], dword [wyn+4] 
+
 	;dzielimy na dwie czesci 64 bit / 2 = 32 bit na kazde wyswietlenie
 
 ; zako�czenie programu lub powr�t
-ety4:
-	ustaw_kursor 7,5
+koniec:
 	wyswietl txt4
 et5:
 	pob_znak
@@ -54,11 +95,7 @@ et5:
 wyjdz:
 	end_prog
 
-		      
-
-
-
-
+		    
 section '.data' data readable writeable
 	zm1  dq 0
 	zm2  dq 0
@@ -66,7 +103,13 @@ section '.data' data readable writeable
 	przed dq 0
 	wyn  dq 0
 	krok dq 0
+	obecna dq 0
+	suma dq 0
+	dwa  dw 2 
+	jeden dw 1
+	zero dw 0
 	dz   dw 10
+
 
 	txt0 db 'Calkowanie metoda trapezow funkcji cos(x)/x z przedzialu a do b',0
 	txt1 db 'Podaj poczatek przedzialu calkowania (a): ',0
