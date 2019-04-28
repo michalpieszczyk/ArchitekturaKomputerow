@@ -31,19 +31,32 @@ start:
 	fld [przed]
 	fidiv [zm3]
 	fstp [krok]
-
-
-zwieksz:
-	fild [zm3]
-	fisub [jeden]
-	fistp [zm3]
 	fld [zm1]
 	fadd [krok]
 	fstp [obecna]
+       ; cinvoke printf, <'Obecna  = %.3lf ',0>, dword [obecna], dword [obecna+4]
+	cinvoke printf, <'Przedzial  = %.3lf ',0>, dword [przed], dword [przed+4]
+	wysw_znak 13
+	wysw_znak 10
+	cinvoke printf, <'Krok  = %.3lf ',0>, dword [krok], dword [krok+4]
+	wysw_znak 13
+	wysw_znak 10
+
+
+zwieksz:
+	fld [obecna]
+	fadd [krok]
+	fstp [obecna]
+	cinvoke printf, <'Suma  = %.3lf ',0>, dword [suma], dword [suma+4]
+	wysw_znak 13
+	wysw_znak 10
 	;fcom [zm2]
-	fild [zm3]
-	ficom [zero]
-	ja dodane 
+	fld [zm2]
+	fcom [obecna]
+	fstsw ax
+	sahf
+	jb dodane
+
 	
 
 sumuj:
@@ -75,23 +88,17 @@ dodane:
 ;wynik do zmienej typu double i wyswietlic w taki sposób jak poniżej na 2x 32 bit
 ;wyswietlenie wyniku - spos�b 2
 
-	ustaw_kursor 5,5
-	cinvoke printf, <'Przedzial  = %.3lf ',0>, dword [przed], dword [przed+4] 
-	cinvoke printf, <'Krok  = %.3lf ',0>, dword [krok], dword [krok+4] 
-	cinvoke printf, <'Suma  = %.3lf ',0>, dword [suma], dword [suma+4] 
+
+	wysw_znak 13
+	wysw_znak 10
 	cinvoke printf, <'Wynik  = %.3lf ',0>, dword [wyn], dword [wyn+4] 
 
 	;dzielimy na dwie czesci 64 bit / 2 = 32 bit na kazde wyswietlenie
 
 ; zako�czenie programu lub powr�t
 koniec:
-	wyswietl txt4
-et5:
 	pob_znak
-	cmp al,'t'
-	jz start  
-	cmp al,'n'
-	jne et5
+
 wyjdz:
 	end_prog
 
@@ -115,6 +122,4 @@ section '.data' data readable writeable
 	txt1 db 'Podaj poczatek przedzialu calkowania (a): ',0
 	txt2 db 'Podaj koniec przedzialu calkowania (b): ',0
 	txt3 db 'Podaj ilosc krokow (n): ',0
-	txt4 db 'Nastepne mnozenie (t/n)?',0
-
 
