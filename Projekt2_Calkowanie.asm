@@ -17,10 +17,9 @@ start:
 	cinvoke scanf, <"%lf">, zm2
 
 	wyswietl txt3
-	cinvoke scanf, <"%d">, zm3     
+	cinvoke scanf, <"%d">, zm3
 	; kolejna zmienna calkowita %d 
 
-;wyn = zm1 + zm2
 	finit
 	fld [zm2] ;pobierz zmienna zm1
 	fsub [zm1] 
@@ -32,9 +31,13 @@ start:
 	fidiv [zm3]
 	fstp [krok]
 	fld [zm1]
-	fadd [krok]
 	fstp [obecna]
-       ; cinvoke printf, <'Obecna  = %.3lf ',0>, dword [obecna], dword [obecna+4]
+
+	;Na sztywno skrocenie przedzialu o jeden krok (problem ze skokami warunkowymi equal
+	fld [zm2]
+	fsub [krok]
+	fstp [zm4]
+
 	cinvoke printf, <'Przedzial  = %.3lf ',0>, dword [przed], dword [przed+4]
 	wysw_znak 13
 	wysw_znak 10
@@ -47,15 +50,12 @@ zwieksz:
 	fld [obecna]
 	fadd [krok]
 	fstp [obecna]
-	cinvoke printf, <'Suma  = %.3lf ',0>, dword [suma], dword [suma+4]
-	wysw_znak 13
-	wysw_znak 10
-	;fcom [zm2]
-	fld [zm2]
+	fld [zm4]
 	fcom [obecna]
 	fstsw ax
 	sahf
 	jb dodane
+
 
 	
 
@@ -65,6 +65,9 @@ sumuj:
 	fdiv [obecna]
 	fadd [suma]
 	fstp [suma]
+	cinvoke printf, <'Suma  = %.3lf ',0>, dword [suma], dword [suma+4]
+	wysw_znak 13
+	wysw_znak 10
 	jmp zwieksz
 
 
@@ -81,6 +84,7 @@ dodane:
 	fadd [zm1]
 	fidiv [dwa]
 	fadd [suma]
+	fmul [krok]
 	fstp [wyn]
 	
 
@@ -107,6 +111,7 @@ section '.data' data readable writeable
 	zm1  dq 0
 	zm2  dq 0
 	zm3  dw 0
+	zm4  dq 0
 	przed dq 0
 	wyn  dq 0
 	krok dq 0
